@@ -1,0 +1,6 @@
+flow (1.0-1) unstable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Cliburn Chan <cliburn@unknown>  Mon, 19 May 2008 16:11:35 -0400
+

@@ -1,0 +1,2 @@
+to make debian/ubuntu packages:
+run build.sh and follow instructions that are echoed on screen

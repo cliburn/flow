@@ -1,0 +1,84 @@
+import distutils.sysconfig as sysconfig
+
+platform = Environment()['PLATFORM']
+
+pylib = sysconfig.get_config_var('LIBPL')
+pyinc = sysconfig.get_config_var('INCLUDEPY')
+version = sysconfig.get_config_var('VERSION')
+if version==None:
+    version='25'
+pyver = 'python' + version
+
+def pyversion():
+    pystr = commands.getoutput('python -V')
+    version = pystr.split(' ')[1]
+    major, minor = version.split('.')[:2]
+    return major + '.' + minor
+
+#Import('install_env')
+
+
+
+# change architecture if necessary
+arch = 'prescott -msse3'
+
+if platform=='darwin':
+    env = Environment(
+        CPPDEFINES=['RMATH_RAND', 'NDEBUG'],
+        LIBS=['Rmath', 'lapack', 'boost_unit_test_framework'],
+        LIBPATH=['/usr/local/lib', '/opt/local/lib', '/Library/Frameworks/R.framework/Versions/Current/Resources/lib'],
+        CPPPATH=['/opt/local/include', '/Library/Frameworks/R.framework/Versions/Current/Resources/include', '/usr/local/include/boost-1_36', pyinc],
+        RPATH=[],
+        LINKFLAGS = '-framework R -framework Python -framework Accelerate', 
+        CXXFLAGS='-bundle -Wall -Wno-long-long -pipe -mtune=%s' % arch,
+        )
+
+    bp = Environment(
+        CPPDEFINES=['RMATH_RAND', 'NDEBUG'],
+        LIBS=['Rmath', 'lapack', 'boost_python', pyver],
+        LIBPATH=['/usr/local/lib', '/opt/local/lib', '/Library/Frameworks/R.framework/Versions/Current/Resources/lib', pylib],
+        CPPPATH=['/opt/local/inlude', '/Library/Frameworks/R.framework/Versions/Current/Resources/include', '/usr/local/include/boost-1_36', pyinc],
+        RPATH=[],
+        LINKFLAGS = '-framework R -framework Python -framework Accelerate', 
+        CXXFLAGS='-bundle -Wall -Wno-long-long -pipe -mtune=%s -fno-strict-aliasing -fPIC -no-cpp-precomp -ftemplate-depth-130 -w -DBOOST_DISABLE_THREADS' % arch,
+        SHLIBPREFIX='', #gets rid of lib prefix
+        SHLIBSUFFIX=sysconfig.get_config_vars('SO')
+        )
+else: # works for Debian and Ubuntu
+    env = Environment(
+        CPPDEFINES=['RMATH_RAND', 'NDEBUG'],        
+        CPPPATH=[pyinc, '/usr/include', '/usr/local/include', '/usr/local/include/boost-bindings'],
+        CXXFLAGS='-Wall -Wno-long-long -pipe -O3 -ffast-math -mtune=%s' % arch,
+        LIBPATH=[pylib],
+        LIBS=['Rmath', 'lapack', 'boost_unit_test_framework', pyver],
+        )
+
+    bp = Environment(
+        CPPDEFINES=['RMATH_RAND', 'NDEBUG', 'BOOST_PYTHON_DYNAMIC_LIB'],
+        CPPPATH=[pyinc, '/usr/include', '/usr/local/include', '/usr/local/include/boost-bindings'],
+        CXXFLAGS='-Wall -Wno-long-long -pipe -O3 -ffast-math -mtune=%s -fPIC' % arch,
+        LIBPATH=[pylib, '/usr/lib', '/usr/local/lib'],
+        LIBS=['Rmath', 'lapack', 'boost_python', pyver],
+        SHLIBPREFIX='', #gets rid of lib prefix
+        SHLIBSUFFIX=sysconfig.get_config_vars('SO')
+        )
+
+
+pif_conv = Split("boost_function cppvec_conv cpplist_conv "
+                 + "cpparr_conv "
+                 + "cpptinyvec_conv cpppair_conv cppnumblitzarr_conv " 
+                 + "cppnumublasvec_conv cppnumublasmat_conv "
+                 + "cppmap_conv cpppointer_conv cppset_conv")
+pif_conv = [t + "_pif.cpp" for t in pif_conv]
+
+bayes_pif = Split('bayes_pif.cpp')
+bayes_files = Split('')
+
+common = "distributions.cpp utils.cpp ublas_utils.cpp math_utils.cpp bayes.cpp mcmc.cpp kmeans.cpp cluster.c".split()
+
+bayes = bp.SharedLibrary(target='bayes', 
+                 source = bayes_files + pif_conv + bayes_pif + common)
+bp.Install('../../plugins/statistics/Bayes', bayes)
+bp.Alias('install', '../../plugins/statistics/Bayes')
+#install_env.Alias('install', '/usr/lib/' + pyversion() + '/site-packages/bayes', source=['bayes.so'])
+

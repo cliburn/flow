@@ -1,0 +1,14 @@
+import fcs
+import numpy
+
+if __name__ == '__main__':
+    cryo = fcs.FCSReader('/Users/cliburn/data/flow/cliburn/chavi_cryo/JB29Oct08_FS.fcs')
+    for k in cryo.text:
+        if k[0] == 'P' and k[-1] == 'S':
+            try:
+                n = int(k[-2])
+                print k
+            except:
+                continue
+
+                        

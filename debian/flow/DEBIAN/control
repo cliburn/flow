@@ -1,0 +1,10 @@
+Package: flow
+Version: 1.0-1
+Section: science
+Priority: extra
+Architecture: i386
+Depends: atlas3-base | lapack3 | liblapack.so.3, libboost-python1.33.1, libc6 (>= 2.5-0ubuntu1), libgcc1 (>= 1:4.1.2), libstdc++6 (>= 4.1.2), python2.5 (>= 2.5), r-mathlib (>= 2.0)
+Installed-Size: 688
+Maintainer: Cliburn Chan <cliburn.chan@duke.edu>
+Description: Flow cytometry package
+ Flow cytometry software package.

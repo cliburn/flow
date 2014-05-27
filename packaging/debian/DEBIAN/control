@@ -1,0 +1,12 @@
+Package: flow
+Version: 1.1-6
+Section: science
+Priority: optional
+Architecture: i386
+Standards-Version: 3.7.2
+Maintainer: Cliburn Chan <cliburn.chan@duke.edu>
+XS-Python-Version: 2.5
+Build-Depends: debhelper (>= 5)
+Depends: python (>=2.5), python-wxgtk2.6, python-tables, python-scipy, python-matplotlib, python-biopython, python-networkx, python-vtk, libboost-python-dev, r-mathlib, lapack3, python-rpy, gfortran, python-mdp
+Description: Flow cytometry package
+ Flow cytometry analysis software

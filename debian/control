@@ -1,0 +1,13 @@
+Source: flow
+Section: science
+Priority: extra
+Maintainer: Cliburn Chan <cliburn.chan@duke.edu>
+Build-Depends: debhelper (>= 5)
+Standards-Version: 3.7.2
+
+XS-Python-Version: 2.5
+Package: flow
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python2.5-wxgtk2.6 python2.5-tables, python2.5-scipy, python2.5-matplotlib, python2.5-biopython
+Description: Flow cytometry package
+ Flow cytometry software package.

@@ -1,0 +1,61 @@
+import distutils.sysconfig as sysconfig
+
+platform=Environment()["PLATFORM"]
+
+pylib = sysconfig.get_config_var('LIBPL')
+pyinc = sysconfig.get_config_var('INCLUDEPY')
+pyver = 'python' + sysconfig.get_config_var('VERSION')
+
+# change architecture if necessary
+arch = 'prescott'
+
+# For Python interface only
+pif_conv = Split("cppvec_conv_pif.cpp cpppointer_conv_pif.cpp cppmap_conv_pif.cpp ")
+pif = Split("flow_pif.cpp analyzer_pif.cpp label_pif.cpp")
+filenames = ['analyzer', 'label']
+files = [filename + '.cpp' for filename in filenames]
+test_files = ['test_seg_fault.cpp']
+
+if platform=='darwin':
+    env = Environment(
+        LIBS=['ANN', pyver],
+        LIBPATH=['/usr/local/lib', '/usr/local/src/ann_1.1.1/lib', pylib],
+        CPPPATH=['/usr/local/include/boost-1_34', '/usr/local/src/ann_1.1.1/include/ANN', pyinc],
+        LINKFLAGS=['-framework Python'],
+        CXXFLAGS='-bundle -Wall -Wno-long-long -pipe -ffast-math -mtune=%s' % arch,
+        )
+
+    bp = Environment(
+        CPPDEFINES=[],
+        LIBS=['ANN', 'boost_python-1_34', pyver],
+        LIBPATH=['/usr/local/lib', '/usr/local/src/ann_1.1.1/lib', pylib],
+        CPPPATH=['/usr/local/include/boost-1_34', '/usr/local/src/ann_1.1.1/include/ANN', pyinc],
+        LINKFLAGS = '-framework Python', 
+        CXXFLAGS='-bundle -Wall -Wno-long-long -pipe -ffast-math -mtune=%s -fno-strict-aliasing -fPIC -no-cpp-precomp -ftemplate-depth-130 -w -DBOOST_DISABLE_THREADS' % arch,
+        SHLIBPREFIX = '', # gets rid of lib prefix
+        SHLIBSUFFIX = sysconfig.get_config_vars('SO')
+        )
+
+else: # works for Debian and Ubuntu
+    env = Environment(
+        CPPDEFINES=[],
+        CPPPATH=['/usr/local/src/ann_1.1.1/include/ANN', pyinc],
+        CXXFLAGS='-Wall -Wno-long-long -pipe -O3 -ffast-math -mtune=%s' % arch,
+        LIBPATH=['/usr/local/src/ann_1.1.1/lib'],
+        LIBS=['ANN', 'm', pyver],
+        )
+
+    bp = Environment(
+        CPPDEFINES=['BOOST_PYTHON_DYNAMIC_LIB '],
+        CPPPATH=['/usr/local/src/ann_1.1.1/include/ANN', pyinc],
+        LIBS=['ANN', 'boost_python', pyver],
+        CXXFLAGS='-Wall -Wno-long-long -pipe -O3 -ffast-math -mtune=%s -fno-strict-aliasing -fPIC -ftemplate-depth-130 -w -DBOOST_DISABLE_THREADS' % arch,
+        LIBPATH=['/usr/local/src/ann_1.1.1/lib', pylib], 
+        SHLIBPREFIX=''
+        )
+
+# Boost python shared library.
+flow = bp.SharedLibrary(target='flow', source = files + pif_conv + pif)
+bp.Install('../../plugins/statistics/Kde/', flow)
+bp.Alias('install', '../../plugins/statistics/Kde')
+

@@ -1,0 +1,1 @@
+shlibs:Depends=atlas3-base | lapack3 | liblapack.so.3, libboost-python1.33.1, libc6 (>= 2.5-0ubuntu1), libgcc1 (>= 1:4.1.2), libstdc++6 (>= 4.1.2), python2.5 (>= 2.5), r-mathlib (>= 2.0)

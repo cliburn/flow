@@ -1,0 +1,15 @@
+;; Object Bayes/
+;; SEMANTICDB Tags save file
+(semanticdb-project-database-file "Bayes/"
+  :tables (list 
+   (semanticdb-table "Main.py"
+    :major-mode 'python-mode
+    :tags '(("plugin" include nil nil [1 30]) ("validators" include nil nil [31 82]) ("wx" include nil nil [84 93]) ("sys" include nil nil [94 104]) ("numpy" include nil nil [105 117]) ("operator" include nil nil [118 133]) ("threading" include nil nil [134 150]) ("bayes" include nil nil [151 163]) ("sample_cluster" include nil nil [164 203]) ("Bayes" type (:superclasses ("Statistics") :members (("name" variable nil (reparse-symbol indented_block_body) [234 246]) ("Main" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [261 265]) ("model" variable nil (reparse-symbol function_parameters) [267 272]))) (reparse-symbol indented_block_body) [252 309])) :type "class") nil [205 309]) ("BayesFrame" type (:superclasses ("wx.Frame") :members (("__init__" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [355 359]) ("model" variable nil (reparse-symbol function_parameters) [361 366]))) (reparse-symbol indented_block_body) [342 1417]) ("Log" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [1430 1434]) ("msg" variable nil (reparse-symbol function_parameters) [1436 1439]))) (reparse-symbol indented_block_body) [1422 1510]) ("ThreadFinish" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [1540 1544]) ("returns" variable nil (reparse-symbol function_parameters) [1546 1553]))) (reparse-symbol indented_block_body) [1523 2318])) :type "class") nil [310 2318]) ("bayesThread" type (:superclasses ("threading.Thread") :members (("__init__" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [2390 2394]) ("window" variable nil (reparse-symbol function_parameters) [2396 2402]) ("x" variable nil (reparse-symbol function_parameters) [2404 2405]) ("n" variable nil (reparse-symbol function_parameters) [2407 2408]) ("p" variable nil (reparse-symbol function_parameters) [2410 2411]) ("k" variable nil (reparse-symbol function_parameters) [2413 2414]) ("nit" variable nil (reparse-symbol function_parameters) [2417 2420]) ("nmc" variable nil (reparse-symbol function_parameters) [2422 2425]))) (reparse-symbol indented_block_body) [2377 2619]) ("run" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [2632 2636]))) (reparse-symbol indented_block_body) [2624 3285])) :type "class") nil [2336 3285]) ("BayesDialog" type (:superclasses ("wx.Dialog") :members (("__init__" function (:arguments (("self" variable nil (reparse-symbol function_parameters) [3363 3367]) ("data" variable nil (reparse-symbol function_parameters) [3368 3372]))) (reparse-symbol indented_block_body) [3350 4677])) :type "class") nil [3316 4677]))
+    :file "Main.py"
+    :pointmax 4677
+    )
+   )
+  :file "semantic.cache"
+  :semantic-tag-version "2.0pre4"
+  :semanticdb-version "2.0pre4"
+  )
